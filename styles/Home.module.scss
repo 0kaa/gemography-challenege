@@ -1,0 +1,73 @@
+.container {
+  margin: 0 40px;
+  @media (max-width: 992px) {
+    margin: 0 10px;
+  }
+}
+
+.main {
+  padding: 1rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  .card_image {
+    margin-right: 20px;
+    @media (max-width: 992px) {
+      margin-right: 10px;
+    }
+    img {
+      width: 150px;
+      height: auto;
+      @media (max-width: 992px) {
+        width: 80px;
+      }
+    }
+  }
+  .card_info {
+    .card_title {
+      font-size: 28px;
+      margin: 0;
+      margin-bottom: 10px;
+      @media (max-width: 992px) {
+        font-size: 18px;
+      }
+    }
+    .card_description {
+      font-size: 18px;
+      margin: 0;
+      margin-bottom: 10px;
+      @media (max-width: 992px) {
+        font-size: 14px;
+      }
+    }
+  }
+  .card_footer {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    @media (max-width: 992px) {
+      font-size: 10px;
+    }
+    p {
+      margin: 0;
+    }
+    .stars_nb,
+    .issues_nb {
+      padding: 5px 10px;
+      border: 1px solid #000;
+      margin-right: 10px;
+      @media (max-width: 992px) {
+        font-size: 10px;
+        padding: 2px 5px;
+      }
+    }
+  }
+}
