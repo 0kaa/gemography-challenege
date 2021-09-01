@@ -3,28 +3,33 @@ import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 import moment from "moment";
 import { useState, useEffect, useRef } from "react";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Home = () => {
   const [repos, setRepos] = useState([]);
   const [page, setPage] = useState(1);
-  const container = useRef();
+
+  const GenerateStarDate = () => {
+    let date = new Date();
+    date.setDate(date.getDate() - 30);
+    let month = (date.getMonth() + 1).toString();
+    let day = date.getDate().toString();
+    if (day.length < 2)
+      day = "0" + day;
+    if (month.length < 2)
+      month = "0" + month;
+    const stringDate = date.getFullYear() + "-" + month + "-" + day;
+    return stringDate;
+  }
 
   // Get Data From Github Using Axios
   const getReposData = async () => {
-    const url = `https://api.github.com/search/repositories?q=created:%3E2017-10-22&sort=stars&order=desc&page=${page}`;
-    const response = await axios.get(url);
-    setRepos([...repos, ...response.data.items]);
+    const startdate = GenerateStarDate();
+    const API_REQUEST = `https://api.github.com/search/repositories?q=created:>${startdate}&sort=stars&order=desc&page=${page}`;
+    const { data } = await axios.get(API_REQUEST);
+    setRepos([...repos, ...data.items]);
   };
 
-  // Load New Data when scrolling
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > container.current.offsetHeight - 700)
-        setPage(page + 1);
-    });
-  }, []);
-
-  // Load Data If Scroll
   useEffect(() => {
     getReposData();
   }, [page]);
@@ -36,7 +41,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div ref={container} className={styles.container}>
+        <InfiniteScroll dataLength={repos.length} hasMore={true} next={() => setPage(page + 1)} className={styles.container}>
           {repos &&
             repos.map((repo) => (
               <div key={repo.id} className={styles.card}>
@@ -62,7 +67,7 @@ const Home = () => {
                 </div>
               </div>
             ))}
-        </div>
+        </InfiniteScroll>
       </main>
     </div>
   );
